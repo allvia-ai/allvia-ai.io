@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  SITE_URL: https://nova-allrounder.github.io
-  PUBLIC_BASE_PATH: /NOVA-ALLRounder.io/
+  SITE_URL: https://allvia-ai.github.io
+  PUBLIC_BASE_PATH: /allvia-ai.io/
 
 permissions:
   contents: read
