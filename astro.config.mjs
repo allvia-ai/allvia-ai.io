@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 
 const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? '';
-const owner = (process.env.GITHUB_REPOSITORY_OWNER ?? 'NOVA-ALLRounder').toLowerCase();
+const owner = (process.env.GITHUB_REPOSITORY_OWNER ?? 'allvia-ai').toLowerCase();
 const isUserSiteRepo = repo.endsWith('.github.io');
 const defaultBase = process.env.GITHUB_ACTIONS === 'true'
   ? (isUserSiteRepo ? '/' : `/${repo}/`)
