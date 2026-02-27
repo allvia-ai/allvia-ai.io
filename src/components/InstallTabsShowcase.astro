@@ -124,7 +124,6 @@ const pipelineItems = [
           <!-- File Tree -->
           <div class="p-4 md:p-5 border-t border-white/10">
             <div class="relative rounded-md border border-white/10 bg-[#08090c] overflow-hidden">
-              <div class="sc-scan-overlay" data-scan-overlay></div>
               <div class="sc-scan-hline" data-scan-hline></div>
               <pre class="relative m-0 p-4 text-[11px] md:text-xs leading-6 text-neutral-500 overflow-x-auto" data-file-tree><code>{fileTreeLines.map((line, i) => (
                 <span class="sc-tree-line" data-tree-index={i}>{line + '\n'}</span>
@@ -250,30 +249,6 @@ const pipelineItems = [
   }
   .sc-tree-line.is-scanned {
     color: #88ccee;
-  }
-
-  /* ── Scanning overlay (vertical blue band) ── */
-  .sc-scan-overlay {
-    position: absolute;
-    left: 46%;
-    width: 22%;
-    top: 0;
-    height: 40%;
-    background: rgba(85, 210, 255, 0.08);
-    border: 1px solid rgba(85, 210, 255, 0.3);
-    opacity: 0;
-    z-index: 2;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
-  .sc-scan-overlay.is-active {
-    opacity: 1;
-    animation: scanVertical 3.5s ease-in-out infinite;
-  }
-  @keyframes scanVertical {
-    0%   { top: 0%; }
-    50%  { top: 60%; }
-    100% { top: 0%; }
   }
 
   /* ── Horizontal scan line ── */

@@ -2,290 +2,98 @@
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
-<DocsLayout title="API Reference" description="AllvIa REST API v2의 엔드포인트, 인증, 요청/응답 형식을 상세히 기술합니다." lang="ko">
+<DocsLayout title="API Reference" description="AllvIa Core 로컬 API 엔드포인트, 인증, 실행 흐름 가이드." lang="ko">
   <h1>API Reference</h1>
-  <p class="doc-subtitle">AllvIa REST API v2의 전체 엔드포인트를 기술합니다. 모든 요청은 JSON 형식이며 Bearer Token 인증이 필요합니다.</p>
-
-  <h2>인증 (Authentication)</h2>
-
-  <p>모든 API 요청에는 <code>Authorization</code> 헤더가 필요합니다:</p>
-
-  <pre><code>{`Authorization: Bearer YOUR_API_KEY`}</code></pre>
-
-  <p>API 키는 <strong>대시보드 → 설정 → API 키</strong>에서 발급할 수 있습니다. 키는 발급 시 한 번만 표시되므로 안전한 곳에 보관하십시오.</p>
+  <p class="doc-subtitle">이 문서는 <code>main/core/src/api_server.rs</code> 기준의 로컬 AllvIa Core API를 설명합니다. 기존 SaaS형 <code>/automations</code> API가 아니라, 에이전트 실행 파이프라인 중심 API입니다.</p>
 
   <div class="doc-callout doc-callout-warning">
-    <strong>보안 주의:</strong> API 키를 클라이언트 사이드 코드나 공개 저장소에 노출하지 마십시오. 서버 사이드 호출 또는 환경변수를 사용하여 관리하십시오.
+    <strong>중요:</strong> AllvIa Core API는 로컬 머신에서 구동되는 에이전트 API입니다. 기본 포트는 <code>5680</code>이며 외부 퍼블릭 API Base URL을 사용하지 않습니다.
   </div>
 
   <h2>Base URL</h2>
+  <pre><code>http://127.0.0.1:5680</code></pre>
+  <p>포트는 <code>STEER_API_PORT</code> 환경변수로 변경할 수 있습니다.</p>
 
-  <pre><code>https://api.nova-platform.io/v2</code></pre>
+  <h2>Authentication</h2>
+  <p>운영 환경에서는 <code>STEER_API_KEY</code>를 설정하고 아래 헤더 중 하나를 사용합니다.</p>
 
-  <p>이하 모든 엔드포인트 경로는 위 Base URL을 기준으로 합니다.</p>
+  <pre><code>{`Authorization: Bearer YOUR_STEER_API_KEY`}</code></pre>
+  <pre><code>{`X-API-Key: YOUR_STEER_API_KEY`}</code></pre>
 
-  <h2>Rate Limits</h2>
+  <p>로컬 개발에서만 <code>STEER_API_ALLOW_NO_KEY=1</code>로 무키 모드를 허용할 수 있습니다.</p>
+
+  <h2>Quick Check</h2>
+
+  <h3><span class="doc-badge doc-badge-get">GET</span> /api/health</h3>
+  <pre><code>{`curl -H "X-API-Key: $STEER_API_KEY" http://127.0.0.1:5680/api/health
+# ok`}</code></pre>
+
+  <h3><span class="doc-badge doc-badge-get">GET</span> /api/status</h3>
+  <pre><code>{`{
+  "cpu_usage": 3.1,
+  "memory_used": 145,
+  "memory_total": 16384
+}`}</code></pre>
+
+  <hr />
+
+  <h2>Core Endpoint Groups</h2>
 
   <table>
     <thead>
-      <tr><th>플랜</th><th>분당 호출</th><th>일일 한도</th></tr>
+      <tr><th>그룹</th><th>주요 엔드포인트</th><th>설명</th></tr>
     </thead>
     <tbody>
-      <tr><td>Individual</td><td>60회</td><td>10,000회</td></tr>
-      <tr><td>Team</td><td>300회</td><td>50,000회</td></tr>
-      <tr><td>Enterprise</td><td>별도 협의</td><td>무제한</td></tr>
+      <tr><td>Agent Pipeline</td><td><code>POST /api/agent/intent</code>, <code>/plan</code>, <code>/execute</code>, <code>/verify</code>, <code>/approve</code></td><td>자연어 입력을 의도 분류 -> 계획 생성 -> 실행/검증으로 처리</td></tr>
+      <tr><td>Goal</td><td><code>POST /api/agent/goal</code>, <code>/goal/run</code>, <code>GET /api/agent/goal/current</code></td><td>목표 기반 비동기/동기 실행</td></tr>
+      <tr><td>Recommendations</td><td><code>GET /api/recommendations</code>, <code>POST /api/recommendations/:id/approve</code></td><td>추천 조회/승인/거절/보류 및 메트릭</td></tr>
+      <tr><td>Verification</td><td><code>POST /api/verify/runtime</code>, <code>/visual</code>, <code>/semantic</code>, <code>/performance</code></td><td>런타임/시각/의미/성능 검증</td></tr>
+      <tr><td>Ops/System</td><td><code>GET /api/logs</code>, <code>/api/system/health</code>, <code>/api/system/runtime-info</code></td><td>운영 상태/로그/런타임 정보 확인</td></tr>
+      <tr><td>Sessions</td><td><code>GET /api/sessions</code>, <code>GET|DELETE /api/sessions/:id</code>, <code>POST /api/sessions/:id/resume</code></td><td>세션 관리</td></tr>
     </tbody>
   </table>
 
-  <p>한도 초과 시 <code>429 Too Many Requests</code> 응답이 반환됩니다. <code>Retry-After</code> 헤더 값을 참조하여 재시도하십시오.</p>
+  <h2>Agent Pipeline Example</h2>
 
-  <h2>Automations</h2>
+  <h3><span class="doc-badge doc-badge-post">POST</span> /api/agent/intent</h3>
+  <pre><code>{`{ "text": "오늘 업무 로그를 분석해서 루틴 추천해줘" }`}</code></pre>
 
-  <h3><span class="doc-badge doc-badge-post">POST</span> /automations</h3>
+  <h3><span class="doc-badge doc-badge-post">POST</span> /api/agent/plan</h3>
+  <pre><code>{`{ "session_id": "session_xxx" }`}</code></pre>
 
-  <p>새 자동화를 생성합니다.</p>
-
-  <h4>Request Body</h4>
-
+  <h3><span class="doc-badge doc-badge-post">POST</span> /api/agent/execute</h3>
   <pre><code>{`{
-  "name": "email-classifier",
-  "description": "수신 이메일을 자동 분류하고 Slack 알림 전송",
-  "trigger": {
-    "type": "webhook",
-    "config": {
-      "path": "/incoming-email",
-      "method": "POST"
-    }
-  },
-  "actions": [
-    {
-      "type": "classify",
-      "model": "default",
-      "categories": ["중요", "일반", "광고"]
-    },
-    {
-      "type": "notify",
-      "channel": "slack",
-      "config": {
-        "webhook_url": "https://hooks.slack.com/...",
-        "template": "새 {{category}} 이메일: {{subject}}"
-      }
-    }
-  ]
+  "plan_id": "plan_xxx",
+  "profile": "strict"
 }`}</code></pre>
 
-  <h4>Response — <code>201 Created</code></h4>
-
+  <h3>Response (요약)</h3>
   <pre><code>{`{
-  "id": "auto_7kX2mN9pQ4",
-  "name": "email-classifier",
-  "status": "active",
-  "created_at": "2026-02-13T06:30:00Z",
-  "trigger": { "type": "webhook", "url": "https://api.nova-platform.io/v2/hooks/auto_7kX2mN9pQ4" },
-  "runs_count": 0
+  "status": "success",
+  "run_id": "plan_xxx_1730000000000",
+  "planner_complete": true,
+  "execution_complete": true,
+  "business_complete": true,
+  "logs": ["..."]
 }`}</code></pre>
 
-  <h4>Error Responses</h4>
+  <h2>Error Codes</h2>
 
   <table>
     <thead>
-      <tr><th>Status Code</th><th>설명</th></tr>
+      <tr><th>Status</th><th>의미</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>400</code></td><td>잘못된 요청 — 필수 필드 누락 또는 유효하지 않은 값</td></tr>
-      <tr><td><code>401</code></td><td>인증 실패 — API 키가 유효하지 않거나 누락됨</td></tr>
-      <tr><td><code>422</code></td><td>처리 불가 — 요청 구성이 유효하지 않음</td></tr>
-      <tr><td><code>429</code></td><td>Rate Limit 초과 — <code>Retry-After</code> 헤더 확인</td></tr>
-    </tbody>
-  </table>
-
-  <hr />
-
-  <h3><span class="doc-badge doc-badge-get">GET</span> /automations</h3>
-
-  <p>워크스페이스에 등록된 모든 자동화 목록을 반환합니다.</p>
-
-  <h4>Query Parameters</h4>
-
-  <table>
-    <thead>
-      <tr><th>파라미터</th><th>타입</th><th>기본값</th><th>설명</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>page</code></td><td>integer</td><td>1</td><td>페이지 번호</td></tr>
-      <tr><td><code>per_page</code></td><td>integer</td><td>20</td><td>페이지당 항목 수 (최대 100)</td></tr>
-      <tr><td><code>status</code></td><td>string</td><td>all</td><td>필터: <code>active</code>, <code>paused</code>, <code>error</code></td></tr>
-      <tr><td><code>sort</code></td><td>string</td><td>created_at</td><td>정렬 기준: <code>created_at</code>, <code>name</code>, <code>runs_count</code></td></tr>
-    </tbody>
-  </table>
-
-  <h4>Response — <code>200 OK</code></h4>
-
-  <pre><code>{`{
-  "data": [
-    {
-      "id": "auto_7kX2mN9pQ4",
-      "name": "email-classifier",
-      "status": "active",
-      "runs_count": 1247,
-      "last_run_at": "2026-02-13T06:15:00Z",
-      "created_at": "2026-01-15T09:00:00Z"
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "per_page": 20,
-    "total": 8,
-    "total_pages": 1
-  }
-}`}</code></pre>
-
-  <hr />
-
-  <h3><span class="doc-badge doc-badge-get">GET</span> /automations/:id</h3>
-
-  <p>특정 자동화의 상세 정보를 반환합니다. 트리거 설정, 액션 구성, 실행 통계를 포함합니다.</p>
-
-  <hr />
-
-  <h3><span class="doc-badge doc-badge-patch">PATCH</span> /automations/:id</h3>
-
-  <p>자동화 설정을 부분 업데이트합니다. <code>name</code>, <code>description</code>, <code>trigger</code>, <code>actions</code>, <code>status</code> 필드를 변경할 수 있습니다.</p>
-
-  <pre><code>{`{
-  "status": "paused"
-}`}</code></pre>
-
-  <hr />
-
-  <h3><span class="doc-badge doc-badge-delete">DELETE</span> /automations/:id</h3>
-
-  <p>자동화를 삭제합니다. 삭제된 자동화의 실행 이력은 <strong>90일간</strong> 보관된 후 영구 삭제됩니다.</p>
-
-  <h4>Response — <code>204 No Content</code></h4>
-  <p>성공 시 응답 본문 없음.</p>
-
-  <hr />
-
-  <h2>Runs</h2>
-
-  <h3><span class="doc-badge doc-badge-get">GET</span> /automations/:id/runs</h3>
-
-  <p>특정 자동화의 실행 이력을 반환합니다.</p>
-
-  <h4>Query Parameters</h4>
-
-  <table>
-    <thead>
-      <tr><th>파라미터</th><th>타입</th><th>기본값</th><th>설명</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>page</code></td><td>integer</td><td>1</td><td>페이지 번호</td></tr>
-      <tr><td><code>per_page</code></td><td>integer</td><td>50</td><td>페이지당 항목 수 (최대 200)</td></tr>
-      <tr><td><code>status</code></td><td>string</td><td>all</td><td>필터: <code>success</code>, <code>error</code>, <code>running</code></td></tr>
-      <tr><td><code>since</code></td><td>ISO 8601</td><td>—</td><td>시작 일시</td></tr>
-      <tr><td><code>until</code></td><td>ISO 8601</td><td>—</td><td>종료 일시</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Response — <code>200 OK</code></h4>
-
-  <pre><code>{`{
-  "data": [
-    {
-      "id": "run_aB3cD4eF5g",
-      "status": "success",
-      "started_at": "2026-02-13T06:15:00Z",
-      "finished_at": "2026-02-13T06:15:02Z",
-      "duration_ms": 2140,
-      "trigger_data": { "source": "webhook", "ip": "203.0.113.1" },
-      "result": { "classified_as": "중요", "notified": true }
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "per_page": 50,
-    "total": 1247,
-    "total_pages": 25
-  }
-}`}</code></pre>
-
-  <hr />
-
-  <h2>Classifiers</h2>
-
-  <h3><span class="doc-badge doc-badge-post">POST</span> /classifiers</h3>
-
-  <p>커스텀 AI 분류 모델을 생성합니다.</p>
-
-  <pre><code>{`{
-  "name": "inquiry-classifier",
-  "categories": ["기술", "결제", "일반", "긴급"],
-  "training_data": [
-    { "text": "로그인이 안 됩니다", "label": "기술" },
-    { "text": "결제 내역을 확인하고 싶습니다", "label": "결제" },
-    { "text": "서비스 이용 시간을 알고 싶습니다", "label": "일반" }
-  ]
-}`}</code></pre>
-
-  <h3><span class="doc-badge doc-badge-get">GET</span> /classifiers</h3>
-  <p>등록된 모든 분류 모델을 조회합니다.</p>
-
-  <h3><span class="doc-badge doc-badge-post">POST</span> /classifiers/:id/predict</h3>
-  <p>텍스트를 분류합니다. 분류 결과와 신뢰도 점수를 반환합니다.</p>
-
-  <pre><code>{`// Request
-{ "text": "비밀번호를 변경하고 싶습니다" }
-
-// Response
-{
-  "prediction": "기술",
-  "confidence": 0.92,
-  "alternatives": [
-    { "category": "일반", "confidence": 0.06 },
-    { "category": "결제", "confidence": 0.02 }
-  ]
-}`}</code></pre>
-
-  <hr />
-
-  <h2>Webhooks</h2>
-
-  <h3>재시도 정책</h3>
-  <p>Webhook 전송 실패 시 지수 백오프(exponential backoff) 방식으로 재시도합니다:</p>
-
-  <table>
-    <thead>
-      <tr><th>시도</th><th>대기 시간</th><th>최대 대기</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1차 재시도</td><td>1초</td><td>—</td></tr>
-      <tr><td>2차 재시도</td><td>4초</td><td>—</td></tr>
-      <tr><td>3차 재시도</td><td>16초</td><td>—</td></tr>
-      <tr><td>4차 재시도</td><td>64초</td><td>—</td></tr>
-      <tr><td>5차 재시도</td><td>256초</td><td>5분</td></tr>
-    </tbody>
-  </table>
-
-  <p>5회 재시도 후에도 실패하면 해당 실행은 <code>error</code> 상태로 기록됩니다.</p>
-
-  <hr />
-
-  <h2>SDKs</h2>
-
-  <table>
-    <thead>
-      <tr><th>언어</th><th>패키지</th><th>상태</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>cURL</td><td>—</td><td>Available</td></tr>
-      <tr><td>Python</td><td><code>pip install nova-sdk</code></td><td>Coming Soon</td></tr>
-      <tr><td>Node.js</td><td><code>npm install @nova/sdk</code></td><td>Coming Soon</td></tr>
-      <tr><td>OpenAPI Spec</td><td>YAML / JSON export</td><td>Coming Soon</td></tr>
+      <tr><td><code>200</code></td><td>정상 처리</td></tr>
+      <tr><td><code>202</code></td><td>비동기 수락(예: goal 실행 대기/진행 중)</td></tr>
+      <tr><td><code>400</code></td><td>요청 형식 오류</td></tr>
+      <tr><td><code>401</code></td><td>인증 실패(API Key 누락/불일치)</td></tr>
+      <tr><td><code>404</code></td><td>세션/플랜/리소스 없음</td></tr>
+      <tr><td><code>409</code></td><td>동일 플랜/전역 실행 충돌</td></tr>
+      <tr><td><code>500</code></td><td>서버 내부 오류</td></tr>
     </tbody>
   </table>
 
   <hr />
-  <p>API 관련 질문이나 추가 엔드포인트 요청은 <a href="https://github.com/allvia-ai/ALLVIA/issues">GitHub Issues</a>를 통해 접수할 수 있습니다.</p>
+  <p>전체 라우트는 <code>main/core/src/api_server.rs</code>의 Router 설정을 기준으로 하며, API 변경 사항은 <a href="https://github.com/allvia-ai/ALLVIA/releases">Releases</a>에서 확인하세요.</p>
 </DocsLayout>
-

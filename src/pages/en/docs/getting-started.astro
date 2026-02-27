@@ -255,7 +255,7 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
 
   <ul>
     <li><a href={withBase('/en/docs/tutorials')}>Tutorials</a> — Pragmatic scenario guides for email classification, report generation, etc.</li>
-    <li><a href={withBase('/en/docs/api')}>API Reference</a> — Programmatic automation management via REST API</li>
+    <li><a href={withBase('/en/docs/api')}>API Reference</a> — Programmatic integration with the local core agent pipeline</li>
     <li><a href={withBase('/en/docs/faq')}>FAQ</a> — Frequently asked questions and troubleshooting</li>
   </ul>
 
@@ -324,7 +324,7 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
       });
 
       // Persist
-      localStorage.setItem('nova-os-preference', os);
+      localStorage.setItem('allvia-os-preference', os);
     }
 
     // Initialize
@@ -332,7 +332,7 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
     let preferredOS = urlParams.get('os');
 
     if (!preferredOS) {
-      preferredOS = localStorage.getItem('nova-os-preference');
+      preferredOS = localStorage.getItem('allvia-os-preference');
     }
 
     if (!preferredOS) {
@@ -353,6 +353,8 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
     });
   </script>
 </DocsLayout>
+
+
 
 
 

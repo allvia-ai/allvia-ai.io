@@ -31,7 +31,7 @@ const withBase = (url: string) => {
   <p>Data collection (<code>routine</code>, <code>status</code>) and application control (<code>control</code>, <code>exec</code>) work offline. However, LLM-based analysis (<code>recommend</code>) and workflow generation (<code>build_workflow</code>) require an OpenAI API connection. A complete offline mode is on our future roadmap.</p>
 
   <h3>Is it free to use?</h3>
-  <p>The AllvIa core agent is <strong>open-source</strong> and available for free. Cloud APIs (automation management, AI classification models, etc.) have different usage limits depending on the plan. Detailed pricing information can be found on the <a href={withBase('/en/pricing')}>Pricing</a> page.</p>
+  <p>The AllvIa core agent is <strong>open-source</strong> and available for free. Additional operational features vary by plan. Detailed pricing information can be found on the <a href={withBase('/en/pricing')}>Pricing</a> page.</p>
 
   <hr />
 
@@ -87,17 +87,18 @@ const withBase = (url: string) => {
 
   <h2>Performance & Scalability</h2>
 
-  <h3>API Rate Limit Policy</h3>
+  <h3>Plan Capacity Guidance</h3>
   <table>
     <thead>
       <tr><th>Plan</th><th>Requests per Minute</th><th>Daily Limit</th></tr>
     </thead>
     <tbody>
-      <tr><td>Individual</td><td>60</td><td>10,000</td></tr>
-      <tr><td>Team</td><td>300</td><td>50,000</td></tr>
+      <tr><td>Personal</td><td>60</td><td>10,000</td></tr>
+      <tr><td>Pro</td><td>300</td><td>50,000</td></tr>
       <tr><td>Enterprise</td><td>Custom</td><td>Unlimited</td></tr>
     </tbody>
   </table>
+  <p>The local Core API does not enforce a fixed global rate-limit middleware by default. Operational limits are applied by deployment and plan policy.</p>
 
   <h3>Does the agent impact system resources?</h3>
   <p>As a Rust native binary, AllvIa typically uses <strong>less than 1% CPU and under 50MB of memory</strong>. The Collector's data collection runs asynchronously in the background.</p>
@@ -121,7 +122,7 @@ const withBase = (url: string) => {
     <li>Ensure trigger settings are correct (Webhook URL, schedule, etc.)</li>
     <li>Verify connector authentication hasn't expired</li>
     <li>Check Write Lock status — execute <code>unlock</code> if necessary</li>
-    <li>Check error messages in execution history: <code>GET /automations/:id/runs?status=error</code></li>
+    <li>Check error messages in execution history: <code>GET /api/agent/task-runs?status=failed</code></li>
   </ol>
 
   <h3>Processing is slow</h3>
@@ -146,4 +147,6 @@ const withBase = (url: string) => {
 
   <p>If you have unresolved issues, please open an issue on <a href="https://github.com/allvia-ai/ALLVIA/issues">GitHub Issues</a> or <a href={withBase('/en/contact')}>contact our technical team directly</a>.</p>
 </DocsLayout>
+
+
 
