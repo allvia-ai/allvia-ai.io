@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
@@ -133,17 +133,17 @@ const popularDocs = [
             <span class="ml-2 text-xs text-neutral-600">Terminal</span>
           </div>
           <p class="text-neutral-500">
-            <span class="text-neutral-400">$</span> git clone https://github.com/NOVA-ALLRounder/main.git
+            <span class="text-neutral-400">$</span> git clone https://github.com/allvia-ai/ALLVIA.git
           </p>
           <p class="text-neutral-500 mt-1">
-            <span class="text-neutral-400">$</span> cd main/core && cp .env.example .env
+            <span class="text-neutral-400">$</span> cd ALLVIA && cp core/.env.example core/.env
           </p>
           <p class="text-neutral-500 mt-1">
-            <span class="text-neutral-400">$</span> cargo build --release
+            <span class="text-neutral-400">$</span> cargo build --manifest-path core/Cargo.toml --release
           </p>
-          <p class="text-[#8fd5a6] mt-3">Build complete — ./target/release/local_os_agent</p>
+          <p class="text-[#8fd5a6] mt-3">Build complete — ./core/target/release/local_os_agent</p>
           <p class="text-neutral-500 mt-3">
-            <span class="text-neutral-400">$</span> ./target/release/local_os_agent
+            <span class="text-neutral-400">$</span> ./core/target/release/local_os_agent
           </p>
           <p class="text-[#8fd5a6] mt-1">AllvIa Agent ready. Type 'help' for available commands.</p>
         </div>
@@ -156,7 +156,7 @@ const popularDocs = [
     <Container>
       <div class="animate-on-scroll">
         <div class="text-center mb-10">
-          <h2 class="text-h2 text-neutral-100 mb-3">Popular Docuementation</h2>
+          <h2 class="text-h2 text-neutral-100 mb-3">Popular Documentation</h2>
           <p class="text-body text-neutral-400">Quickly find our most frequently referenced items.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
@@ -183,7 +183,7 @@ const popularDocs = [
           You can open an issue on GitHub or contact our technical team directly.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Button variant="primary" href="https://github.com/NOVA-ALLRounder/main/issues" external>GitHub Issues</Button>
+          <Button variant="primary" href="https://github.com/allvia-ai/ALLVIA/issues" external>GitHub Issues</Button>
           <Button variant="ghost" href={withBase('/en/contact')}>Contact</Button>
         </div>
       </div>
@@ -253,3 +253,4 @@ const popularDocs = [
     background: var(--site-bg-raised);
   }
 </style>
+

@@ -1,35 +1,35 @@
----
+﻿---
 const installOptions = [
-  { id: 'curl', label: 'curl', command: 'curl -L https://github.com/NOVA-ALLRounder/main/archive/refs/heads/main.tar.gz | tar -xz' },
-  { id: 'npm', label: 'npm', command: 'git clone https://github.com/NOVA-ALLRounder/main.git && cd allvia-ai.io/web && npm install && npm run dev' },
-  { id: 'bun', label: 'bun', command: 'git clone https://github.com/NOVA-ALLRounder/main.git && cd allvia-ai.io/web && bun install && bun run dev' },
-  { id: 'brew', label: 'brew', command: 'brew install rust && git clone https://github.com/NOVA-ALLRounder/main.git && cd allvia-ai.io/core && cargo build --release' },
-  { id: 'paru', label: 'paru', command: 'paru -S rustup nodejs npm && git clone https://github.com/NOVA-ALLRounder/main.git' },
+  { id: 'curl', label: 'curl', command: 'curl -L https://github.com/allvia-ai/ALLVIA/archive/refs/heads/main.tar.gz | tar -xz' },
+  { id: 'npm', label: 'npm', command: 'git clone https://github.com/allvia-ai/ALLVIA.git && cd ALLVIA/web && npm install && npm run dev' },
+  { id: 'bun', label: 'bun', command: 'git clone https://github.com/allvia-ai/ALLVIA.git && cd ALLVIA/web && bun install && bun run dev' },
+  { id: 'brew', label: 'brew', command: 'brew install rust && git clone https://github.com/allvia-ai/ALLVIA.git && cd ALLVIA && cargo build --manifest-path core/Cargo.toml --release' },
+  { id: 'paru', label: 'paru', command: 'paru -S rustup nodejs npm && git clone https://github.com/allvia-ai/ALLVIA.git' },
 ];
 
 const terminalLines = [
-  { text: '<span class="text-neutral-300">allvia-ai/allvia-ai.io</span> 저장소 클론', highlight: false },
+  { text: '<span class="text-neutral-300">allvia-ai/ALLVIA</span> 저장소 클론', highlight: false },
   { text: '<span class="text-neutral-300">core/.env</span> 파일에 OPENAI_API_KEY 설정', highlight: false },
-  { text: '<span class="text-neutral-300">cargo build --release</span> 로 코어 바이너리 빌드', highlight: false },
-  { text: '코어 프로세스 실행: <span class="hl-green">./target/release/core</span>', highlight: true },
-  { text: '<span class="text-neutral-300">cargo test</span> 로 검증 테스트 실행', highlight: false },
-  { text: '<span class="text-neutral-300">./scripts/build_release.sh</span> 로 데스크톱 번들 빌드', highlight: false },
-  { text: '릴리스 아티팩트 준비 후 web/docs 모듈 배포', highlight: false },
+  { text: '<span class="text-neutral-300">cargo build --manifest-path core/Cargo.toml --release</span> 로 코어 빌드', highlight: false },
+  { text: '코어 프로세스 실행: <span class="hl-green">./core/target/release/local_os_agent</span>', highlight: true },
+  { text: '<span class="text-neutral-300">cargo test --manifest-path core/Cargo.toml</span> 로 검증 테스트 실행', highlight: false },
+  { text: '<span class="text-neutral-300">./scripts/rebuild_and_deploy.sh</span> 로 앱 번들 재배포', highlight: false },
+  { text: 'runbook 기준으로 /Applications/Steer OS.app 헬스체크', highlight: false },
 ];
 
 const fileTreeLines = [
   'core/src/',
   '├── main.rs          # CLI 및 메인 루프',
-  '├── analyzer.rs      # 행동 패턴 분석기',
-  '├── db.rs            # SQLite 저장소',
-  '├── policy.rs        # 보안 정책 엔진',
-  '├── executor.rs      # 셸 명령 실행',
+  '├── intent_router.rs # 자연어 의도 분류',
+  '├── plan_builder.rs  # 실행 계획 생성',
+  '├── execution_controller.rs # 단계 실행',
+  '├── verification_engine.rs # 실행 결과 검증',
+  '├── policy.rs        # 보안 정책 분류',
+  '├── security.rs      # 셸 명령 위험 분류',
+  '├── privacy.rs       # PII 마스킹',
   '├── llm_gateway.rs   # OpenAI 연동',
-  '├── notifier.rs      # macOS 알림',
-  '├── monitor.rs       # 시스템 모니터링',
-  '├── applescript.rs   # 앱 제어',
   '├── n8n_api.rs       # n8n 워크플로우 API',
-  '├── visual_driver.rs # UI 자동화 폴백',
+  '├── visual_driver.rs # UI 자동화 드라이버',
   '└── macos/           # 네이티브 macOS 바인딩',
 ];
 
@@ -37,8 +37,8 @@ const pipelineItems = [
   { text: 'clone repository', done: true },
   { text: 'configure .env', done: true },
   { text: 'build core binary', done: true },
-  { text: 'run release bundle script', done: false, active: true },
-  { text: 'publish website updates', done: false },
+  { text: 'validate core cli goal-run', done: false, active: true },
+  { text: 'rebuild & deploy app bundle', done: false },
 ];
 ---
 
@@ -46,7 +46,7 @@ const pipelineItems = [
   <div class="max-w-4xl mx-auto">
     <div class="space-y-2 mb-8">
       <p class="text-body-lg text-neutral-300">
-        지금 웹사이트로 빌드 중인 프로젝트는 allvia-ai/allvia-ai.io 입니다.
+        지금 웹사이트에서 설명 중인 대상 프로젝트는 allvia-ai/ALLVIA 입니다.
       </p>
       <p class="text-body-lg text-neutral-300">clone, 환경설정, 빌드, 테스트, 릴리스까지 한 흐름으로 확인할 수 있습니다.</p>
     </div>
@@ -136,21 +136,21 @@ const pipelineItems = [
         <!-- Right: Sidebar -->
         <aside class="p-4 md:p-5 bg-[#0f1116]" data-sidebar>
           <h3 class="sc-sidebar-block text-neutral-100 text-sm md:text-base font-semibold mb-4" data-sb-index="0">
-            Building allvia-ai/allvia-ai.io
+            Building allvia-ai/ALLVIA
           </h3>
           <div class="space-y-4 text-xs md:text-sm">
             <div class="sc-sidebar-block" data-sb-index="1">
               <p class="text-neutral-500 mb-1">Repository</p>
-              <p class="text-neutral-300">allvia-ai/allvia-ai.io</p>
+              <p class="text-neutral-300">allvia-ai/ALLVIA</p>
               <p class="text-neutral-400">Branch: main</p>
-              <p class="text-neutral-400">Rust Native Agent</p>
+              <p class="text-neutral-400">Local OS Agent (Rust Native)</p>
             </div>
             <div class="sc-sidebar-block" data-sb-index="2">
               <p class="text-neutral-500 mb-1">Modules</p>
               <ul class="space-y-1 text-neutral-300">
-                <li>• core (Rust)</li>
-                <li>• desktop (Tauri)</li>
-                <li>• web/docs</li>
+                <li>• core (Rust SSOT)</li>
+                <li>• collector/sensors (data pipeline)</li>
+                <li>• web + tauri (desktop UI)</li>
               </ul>
             </div>
             <div class="sc-sidebar-block" data-sb-index="3">
@@ -512,3 +512,4 @@ const pipelineItems = [
     observer.observe(root);
   }
 </script>
+

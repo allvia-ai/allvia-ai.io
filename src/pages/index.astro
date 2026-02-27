@@ -14,7 +14,7 @@ const faqItems = [
   {
     question: '어떤 운영체제를 지원하나요?',
     answer:
-      'macOS 12+(Monterey)를 기본 지원하며, Windows 10+ 환경에서도 PowerShell 기반 서비스(run_core.ps1)로 실행 가능합니다. Rust 네이티브 빌드이므로 Linux에서도 컴파일할 수 있습니다.',
+      'main 저장소 기준 필수/권장 환경은 macOS 12+(Monterey) 이상입니다. Windows는 scripts/run_core.ps1 경로로 실행할 수 있으며, Linux는 Rust 네이티브 빌드가 가능합니다.',
   },
   {
     question: '자연어로 컴퓨터를 조작할 수 있나요?',
@@ -39,12 +39,12 @@ const faqItems = [
   {
     question: '팀에서 함께 사용할 수 있나요?',
     answer:
-      'Tauri 기반 데스크톱 앱(.app/.exe)으로 팀원에게 원클릭 배포 가능합니다. n8n 워크플로우 공유, RBAC 기반 역할 관리, Self-Healing Guardian(프로세스 자동 재시작)을 지원합니다.',
+      'Tauri 기반 데스크톱 앱(.app/.exe)으로 팀 배포가 가능합니다. n8n 워크플로우 공유와 Self-Healing Guardian(프로세스 자동 재시작) 운영 경로를 제공합니다.',
   },
 ];
 ---
 
-<BaseLayout title="AllvIa — All works via AI" description="자연어로 컴퓨터를 제어하는 AI 에이전트. 73개+ Rust 모듈, 5계층 보안, 자동 패턴 분석과 워크플로우 생성." lang="ko">
+<BaseLayout title="AllvIa — All works via AI" description="자연어로 컴퓨터를 제어하는 AI 에이전트. 99개+ Rust 코어 모듈, 5계층 보안, 자동 패턴 분석과 워크플로우 생성." lang="ko">
   <Header slot="header" lang="ko" />
 
   <!-- Hero -->
@@ -96,17 +96,17 @@ const faqItems = [
         <p class="text-center text-caption text-neutral-500 font-medium tracking-wide uppercase mb-10">Core Capabilities</p>
 
         <div class="flex flex-wrap items-center justify-center gap-8 md:gap-14 mb-16">
-          {['surf', 'routine', 'recommend', 'control', 'build_workflow', 'exec', 'status'].map((name) => (
+          {['surf', 'routine', 'recommend', 'control', 'build_workflow', 'ai_digest', 'exec', 'status'].map((name) => (
             <div class="flex items-center justify-center h-8 px-4 text-neutral-400 text-sm font-mono font-semibold tracking-wider">{name}</div>
           ))}
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
           {[
-            { value: '73+', label: 'Rust 모듈' },
+            { value: '99+', label: 'Rust 코어 모듈' },
             { value: '5', label: '보안 계층' },
             { value: '4', label: '외부 연동 서비스' },
-            { value: '7', label: 'CLI 명령어' },
+            { value: '8', label: 'CLI 명령어' },
           ].map((stat) => (
             <div class="text-center rounded-lg border border-white/10 bg-[#14161b] py-8">
               <p class="text-h2 text-white font-bold">{stat.value}</p>
@@ -348,11 +348,11 @@ const faqItems = [
       <div class="text-center animate-on-scroll">
         <h2 class="text-h2 text-white mb-4">지금 바로 시작하세요</h2>
         <p class="text-body-lg text-neutral-400 max-w-xl mx-auto mb-10">
-          Clone, 빌드, 실행까지 5분이면 충분합니다. 73개+ Rust 모듈의 성능을 직접 경험하세요.
+          Clone, 빌드, 실행까지 5분이면 충분합니다. 99개+ Rust 코어 모듈의 성능을 직접 경험하세요.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button variant="primary" size="lg" href="/docs/getting-started">시작하기</Button>
-          <Button variant="ghost" size="lg" href="https://github.com/NOVA-ALLRounder/main" external>GitHub</Button>
+          <Button variant="ghost" size="lg" href="https://github.com/allvia-ai/ALLVIA.git" external>GitHub</Button>
         </div>
       </div>
     </Container>
@@ -360,3 +360,4 @@ const faqItems = [
 
   <Footer slot="footer" />
 </BaseLayout>
+

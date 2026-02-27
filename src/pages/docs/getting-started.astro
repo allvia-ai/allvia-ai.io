@@ -1,4 +1,4 @@
----
+﻿---
 import DocsLayout from '../../layouts/DocsLayout.astro';
 const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? '';
 const isUserSiteRepo = repo.endsWith('.github.io');
@@ -84,20 +84,20 @@ const withBase = (url: string) => {
 
   <div data-os-only="macos">
     <pre><code>{`# 저장소 클론
-git clone https://github.com/NOVA-ALLRounder/main.git
-cd main/core
+git clone https://github.com/allvia-ai/ALLVIA.git
+cd ALLVIA
 
 # 환경변수 파일 생성
-cp .env.example .env`}</code></pre>
+cp core/.env.example core/.env`}</code></pre>
   </div>
 
   <div data-os-only="windows">
     <pre><code>{`# 저장소 클론
-git clone https://github.com/NOVA-ALLRounder/main.git
-cd main/core
+git clone https://github.com/allvia-ai/ALLVIA.git
+cd ALLVIA
 
 # 환경변수 파일 생성 (PowerShell)
-Copy-Item .env.example .env`}</code></pre>
+Copy-Item core/.env.example core/.env`}</code></pre>
   </div>
 
   <p><code>.env</code> 파일을 편집하여 <code>OPENAI_API_KEY</code>를 설정합니다.</p>
@@ -110,14 +110,14 @@ Copy-Item .env.example .env`}</code></pre>
 
   <p>Rust 네이티브 바이너리를 빌드합니다. Release 빌드는 약 2~3분이 소요됩니다.</p>
 
-  <pre><code>{`cargo build --release`}</code></pre>
+  <pre><code>{`cargo build --manifest-path core/Cargo.toml --release`}</code></pre>
 
   <div data-os-only="macos">
-    <p>빌드 완료 후 바이너리 위치: <code>./target/release/local_os_agent</code></p>
+    <p>빌드 완료 후 바이너리 위치: <code>./core/target/release/local_os_agent</code></p>
   </div>
 
   <div data-os-only="windows">
-    <p>빌드 완료 후 바이너리 위치: <code>.\target\release\local_os_agent.exe</code></p>
+    <p>빌드 완료 후 바이너리 위치: <code>.\core\target\release\local_os_agent.exe</code></p>
   </div>
 
   <h2>Step 3 — 에이전트 실행</h2>
@@ -128,10 +128,10 @@ Copy-Item .env.example .env`}</code></pre>
     bash scripts/run_local.sh
     
     # 또는 바이너리 직접 실행
-    ./target/release/local_os_agent
+    ./core/target/release/local_os_agent
     
     # 또는 cargo run 사용
-    cargo run --release --bin local_os_agent`}</code></pre>
+    cargo run --manifest-path core/Cargo.toml --bin core --release`}</code></pre>
   </div>
 
   <div data-os-only="windows">
@@ -141,12 +141,12 @@ Copy-Item .env.example .env`}</code></pre>
 .\scripts\run_core.ps1 -CollectorImpl rust
 
 # 또는 직접 실행
-.\target\release\local_os_agent.exe`}</code></pre>
+.\core\target\release\local_os_agent.exe`}</code></pre>
   </div>
 
   <p>정상적으로 실행되면 다음과 같은 프롬프트가 표시됩니다:</p>
 
-  <pre><code>{`AllvIa Agent v2.4.0 ready
+  <pre><code>{`AllvIa Agent ready
 Environment Scan: Found 349 apps
 Collector: running on port 8080
 Write Lock: enabled (use 'unlock' to disable)
@@ -217,9 +217,9 @@ docker compose up -d n8n
 # → http://localhost:5678
 
 # 런타임 모드 변경 (환경변수)
-# STEER_N8N_RUNTIME=docker  (기본값)
-# STEER_N8N_RUNTIME=npx
-# STEER_N8N_RUNTIME=manual`}</code></pre>
+# STEER_N8N_RUNTIME=manual  (기본값)
+# STEER_N8N_RUNTIME=docker
+# STEER_N8N_RUNTIME=npx`}</code></pre>
 
   <h3>데이터 수집 및 배치 분석</h3>
 
@@ -239,14 +239,14 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
 
   <p>팀 배포용 데스크톱 애플리케이션을 빌드할 수 있습니다.</p>
 
-  <pre><code>{`./scripts/build_release.sh`}</code></pre>
+  <pre><code>{`./scripts/rebuild_and_deploy.sh`}</code></pre>
 
   <div data-os-only="macos">
-    <p>빌드 완료 후 <code>.app</code> 파일이 <code>desktop/src-tauri/target/release/bundle/macos/</code>에 생성됩니다.</p>
+    <p>빌드 완료 후 <code>.app</code> 파일이 <code>web/src-tauri/target/release/bundle/macos/</code>에 생성됩니다.</p>
   </div>
 
   <div data-os-only="windows">
-    <p>빌드 완료 후 <code>.exe</code> 설치 파일이 <code>desktop/src-tauri/target/release/bundle/msi/</code> 또는 <code>nsis/</code>에 생성됩니다.</p>
+    <p>빌드 완료 후 <code>.exe</code> 설치 파일이 <code>web/src-tauri/target/release/bundle/msi/</code> 또는 <code>nsis/</code>에 생성됩니다.</p>
   </div>
 
   <h2>다음 단계</h2>
@@ -260,7 +260,7 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
   </ul>
 
   <hr />
-  <p>문제가 발생한 경우 <a href="https://github.com/NOVA-ALLRounder/main/issues">GitHub Issues</a>에서 도움을 받거나 <a href={withBase('/contact')}>기술팀에 직접 문의</a>하실 수 있습니다.</p>
+  <p>문제가 발생한 경우 <a href="https://github.com/allvia-ai/ALLVIA/issues">GitHub Issues</a>에서 도움을 받거나 <a href={withBase('/contact')}>기술팀에 직접 문의</a>하실 수 있습니다.</p>
 
   <style>
     .os-switcher-container {
@@ -353,3 +353,6 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
     });
   </script>
 </DocsLayout>
+
+
+

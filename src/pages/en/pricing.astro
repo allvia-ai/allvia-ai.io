@@ -10,16 +10,16 @@ import Accordion from '../../components/ui/Accordion.astro';
 
 const pricingFaq = [
   {
-    question: 'What can I do with the Free plan?',
-    answer: 'The Free plan allows you to experience core features and execute basic automations. It includes usage limits and community support.',
+    question: 'What can I do with the Personal (Free) plan?',
+    answer: 'You can use local DB-based Shadow Map learning, limited daily native controls, and simple workflow suggestions. It is designed for individual/student onboarding.',
   },
   {
-    question: 'What is the difference between Pro and Team?',
-    answer: 'Pro is for individual power users, while Team is for groups collaborating. Team includes workflow sharing, role management, and seat-based billing.',
+    question: 'What is the core value of the Pro plan?',
+    answer: 'Pro includes unlimited native OS control, advanced workflow suggestions with n8n integration, and Telegram task report delivery for heavy users.',
   },
   {
-    question: 'Can I switch between monthly and annual billing?',
-    answer: 'Yes. You can change your billing cycle at any time in Account Settings → Workspace.',
+    question: 'How is Enterprise billed?',
+    answer: 'Enterprise is provided through annual contracts (license + maintenance), designed around each organization’s security and procurement requirements.',
   },
   {
     question: 'How do I get started with Enterprise?',
@@ -45,101 +45,74 @@ const pricingFaq = [
 
 const plans = [
   {
-    name: 'Free',
-    desc: 'Start for free as an individual',
+    name: 'Personal',
+    desc: 'Free plan for individual users and students',
     price: '$0',
     period: '/mo',
     cta: 'Start for Free',
     ctaVariant: 'secondary' as const,
     ctaHref: '/en/docs/getting-started',
     features: [
-      '50K Tokens / mo',
-      '3 Integrations',
-      'Basic Analytics Dashboard',
+      'Local DB-based Shadow Map learning',
+      'Limited daily native OS controls',
+      'Simple workflow suggestions',
+      'Baseline Zero-Trust policy',
       'Community Support',
-      '7-day History',
     ],
     highlighted: false,
   },
   {
     name: 'Pro',
-    desc: 'Full features for power users',
+    desc: 'Subscription plan for IT experts and heavy users',
     price: '$20',
     period: '/mo',
-    cta: 'Start 14-day Free Trial',
+    cta: 'Start Pro',
     ctaVariant: 'primary' as const,
     ctaHref: '/en/docs/getting-started',
     features: [
-      '1M Tokens / mo',
-      'Unlimited Integrations',
-      'Advanced Analytics & Reports',
-      'Priority Email Support',
-      '30-day History',
-      'API Access',
-      'Custom Webhooks',
+      'Unlimited native OS control',
+      'Advanced workflow suggestions (n8n)',
+      'Telegram task report delivery',
+      'Advanced automation operations',
+      'Priority Support',
     ],
     highlighted: true,
   },
   {
-    name: 'Team',
-    desc: 'For teams that need collaboration',
-    price: '$200',
-    period: '/seat/mo',
-    cta: 'Start 14-day Free Trial',
-    ctaVariant: 'secondary' as const,
-    ctaHref: '/en/docs/getting-started',
-    features: [
-      '10M Tokens / mo',
-      'Includes all Pro features',
-      'Workflow Sharing & Collab',
-      'Team Role Management',
-      '90-day History',
-      'Team Analytics Dashboard',
-      'Slack / Teams Notifications',
-    ],
-    highlighted: false,
-  },
-  {
     name: 'Enterprise',
-    desc: 'For organizations needing governance',
-    price: 'Custom',
+    desc: 'B2B plan for security-sensitive organizations',
+    price: 'Annual Contract',
     period: '',
     cta: 'Contact Sales',
     ctaVariant: 'secondary' as const,
     ctaHref: '/en/contact',
     features: [
-      'Unlimited Tokens',
-      'Includes all Team features',
-      'SSO and RBAC',
-      'Audit Logs & Compliance',
-      'Dedicated Support Manager',
-      'Custom Integration Development',
-      'SLA Agreements',
-      'On-premise Options',
+      'Zero-Trust admin dashboard',
+      'On-premise LLM integration',
+      'Integrated audit logs',
+      'Central kill-switch governance',
+      'Annual license + maintenance',
+      'Enterprise security/procurement support',
     ],
     highlighted: false,
   },
 ];
 
 const comparisonFeatures = [
-  { name: 'Monthly Tokens', free: '50K', pro: '1M', team: '10M', enterprise: 'Unlimited' },
-  { name: 'Integrations', free: '3', pro: 'Unlimited', team: 'Unlimited', enterprise: 'Unlimited + Custom' },
-  { name: 'Seats', free: '1', pro: '1', team: 'Unlimited', enterprise: 'Unlimited' },
-  { name: 'Analytics', free: 'Basic', pro: 'Advanced', team: 'Team Dashboard', enterprise: 'Custom' },
-  { name: 'API Access', free: '—', pro: '✓', team: '✓', enterprise: '✓' },
-  { name: 'Custom Webhooks', free: '—', pro: '✓', team: '✓', enterprise: '✓' },
-  { name: 'Workflow Sharing', free: '—', pro: '—', team: '✓', enterprise: '✓' },
-  { name: 'Team Role Mgmt', free: '—', pro: '—', team: '✓', enterprise: 'Advanced' },
-  { name: 'SSO', free: '—', pro: '—', team: '—', enterprise: '✓' },
-  { name: 'RBAC', free: '—', pro: '—', team: 'Basic', enterprise: 'Advanced' },
-  { name: 'Audit Logs', free: '—', pro: '—', team: '—', enterprise: '✓' },
-  { name: 'Retention', free: '7 Days', pro: '30 Days', team: '90 Days', enterprise: 'Custom' },
-  { name: 'Support', free: 'Community', pro: 'Email', team: 'Email/Chat', enterprise: 'Dedicated Manager' },
-  { name: 'SLA', free: '—', pro: '99.5%', team: '99.9%', enterprise: '99.99%' },
+  { name: 'Target Customers', personal: 'Individuals/Students', pro: 'IT Experts/Heavy Users', enterprise: 'Organizations' },
+  { name: 'Pricing Model', personal: 'Free', pro: '$20/mo', enterprise: 'Annual Contract' },
+  { name: 'Native OS Control', personal: 'Daily Limited', pro: 'Unlimited', enterprise: 'Policy-based Extended' },
+  { name: 'Workflow Suggestions', personal: 'Simple', pro: 'Advanced (n8n)', enterprise: 'Org-tailored' },
+  { name: 'Telegram Reports', personal: '—', pro: '✓', enterprise: '✓' },
+  { name: 'Zero-Trust Admin Dashboard', personal: '—', pro: '—', enterprise: '✓' },
+  { name: 'On-premise LLM', personal: '—', pro: '—', enterprise: '✓' },
+  { name: 'Integrated Audit Logs', personal: '—', pro: 'Basic', enterprise: 'Advanced/Centralized' },
+  { name: 'Central Kill-switch Governance', personal: '—', pro: '—', enterprise: '✓' },
+  { name: 'Contract & Support', personal: 'Community', pro: 'Priority Support', enterprise: 'Annual Maintenance Contract' },
 ];
 ---
 
-<BaseLayout title="Pricing — AllvIa" description="Free, Pro, Team, Enterprise — Choose the plan that fits your scale." lang="en">
+<BaseLayout title="Pricing — AllvIa" description="Personal, Pro, Enterprise — Choose the plan that fits your scale." lang="en">
   <Header slot="header" lang="en" />
 
   <Section padding="large">
@@ -156,7 +129,7 @@ const comparisonFeatures = [
 
   <Section padding="none" class="pb-24 md:pb-32">
     <Container>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-on-scroll">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll">
         {plans.map((plan) => (
           <div class:list={[
             'rounded-lg border p-8 flex flex-col',
@@ -209,9 +182,8 @@ const comparisonFeatures = [
             <thead>
               <tr>
                 <th>Feature</th>
-                <th>Free</th>
+                <th>Personal</th>
                 <th>Pro</th>
-                <th>Team</th>
                 <th>Enterprise</th>
               </tr>
             </thead>
@@ -219,9 +191,8 @@ const comparisonFeatures = [
               {comparisonFeatures.map((f) => (
                 <tr>
                   <td class="font-medium text-neutral-100">{f.name}</td>
-                  <td>{f.free}</td>
+                  <td>{f.personal}</td>
                   <td>{f.pro}</td>
-                  <td>{f.team}</td>
                   <td>{f.enterprise}</td>
                 </tr>
               ))}

@@ -10,16 +10,16 @@ import Accordion from '../components/ui/Accordion.astro';
 
 const pricingFaq = [
   {
-    question: '무료 플랜으로 무엇을 할 수 있나요?',
-    answer: 'Free 플랜으로 코어 기능을 체험하고, 기본 자동화를 실행할 수 있습니다. 사용량 제한이 있으며 커뮤니티 지원이 제공됩니다.',
+    question: 'Personal(무료) 플랜으로 무엇을 할 수 있나요?',
+    answer: '로컬 DB 기반 Shadow Map 학습, 제한된 일일 네이티브 제어, 단순 워크플로우 제안을 사용할 수 있습니다. 개인/학생의 초기 체험을 위한 플랜입니다.',
   },
   {
-    question: 'Pro와 Team의 차이는 뭔가요?',
-    answer: 'Pro는 개인 파워유저를 위한 플랜이고, Team은 다수의 멤버가 협업하는 팀을 위한 플랜입니다. Team부터 워크플로우 공유, 역할 관리, 시트 기반 과금이 적용됩니다.',
+    question: 'Pro 플랜의 핵심 가치는 무엇인가요?',
+    answer: '무제한 네이티브 OS 제어, n8n 연동 고급 워크플로우 제안, 텔레그램 작업 리포트 송출을 제공합니다. 개인 파워유저/전문가용 월 구독 플랜입니다.',
   },
   {
-    question: '월간/연간 결제를 변경할 수 있나요?',
-    answer: '네. 계정 설정 → 워크스페이스에서 결제 주기를 언제든 변경할 수 있습니다.',
+    question: 'Enterprise는 어떻게 과금되나요?',
+    answer: 'Enterprise는 연간 계약(라이선스 + 유지보수) 방식입니다. 조직의 보안/조달 요건에 맞춰 계약 단위를 설계합니다.',
   },
   {
     question: 'Enterprise는 어떻게 시작하나요?',
@@ -45,101 +45,74 @@ const pricingFaq = [
 
 const plans = [
   {
-    name: 'Free',
-    desc: '개인 사용자를 위한 무료 시작',
+    name: 'Personal',
+    desc: '일반 개인 사용자/학생을 위한 무료 플랜',
     price: '₩0',
     period: '/월',
     cta: '무료 시작',
     ctaVariant: 'secondary' as const,
     ctaHref: '/docs/getting-started',
     features: [
-      '월 50K 토큰',
-      '3개 연동',
-      '기본 분석 대시보드',
+      '로컬 DB 기반 Shadow Map 학습',
+      '제한된 일일 네이티브 제어 횟수',
+      '단순 워크플로우 제안',
+      '기본 Zero-Trust 정책',
       '커뮤니티 지원',
-      '7일 사용 이력',
     ],
     highlighted: false,
   },
   {
     name: 'Pro',
-    desc: '개인 파워유저를 위한 풀 기능',
+    desc: 'IT 전문가/헤비 유저를 위한 구독형 플랜',
     price: '$20',
     period: '/월',
-    cta: '14일 무료 체험',
+    cta: 'Pro 시작',
     ctaVariant: 'primary' as const,
     ctaHref: '/docs/getting-started',
     features: [
-      '월 1M 토큰',
-      '무제한 연동',
-      '고급 분석 & 리포트',
-      '우선 이메일 지원',
-      '30일 사용 이력',
-      'API 접근',
-      '커스텀 웹훅',
+      '무제한 네이티브 OS 제어',
+      '고급 워크플로우 제안 (n8n 연동)',
+      '텔레그램 작업 리포트 송출',
+      '고급 자동화 운영 기능',
+      '우선 지원',
     ],
     highlighted: true,
   },
   {
-    name: 'Team',
-    desc: '협업이 필요한 팀을 위한 플랜',
-    price: '$200',
-    period: '/시트/월',
-    cta: '14일 무료 체험',
-    ctaVariant: 'secondary' as const,
-    ctaHref: '/docs/getting-started',
-    features: [
-      '월 10M 토큰',
-      'Pro 전체 기능 포함',
-      '워크플로우 공유 & 협업',
-      '팀 역할 관리',
-      '90일 사용 이력',
-      '팀 분석 대시보드',
-      'Slack / Teams 알림',
-    ],
-    highlighted: false,
-  },
-  {
     name: 'Enterprise',
-    desc: '고급 거버넌스가 필요한 조직',
-    price: '맞춤',
+    desc: '보안을 중시하는 기업/기관 대상 B2B 플랜',
+    price: '연간 계약',
     period: '',
     cta: '영업 문의',
     ctaVariant: 'secondary' as const,
     ctaHref: '/contact',
     features: [
-      '무제한 토큰',
-      'Team 전체 기능 포함',
-      'SSO 및 RBAC',
-      '감사 로그 & 컴플라이언스',
-      '전담 지원 매니저',
-      '맞춤 연동 개발',
-      'SLA 계약',
-      '온프레미스 옵션',
+      'Zero-Trust 관리자 대시보드',
+      'On-premise LLM 연동',
+      '통합 감사(Audit) 로그',
+      '킬 스위치 중앙 관리',
+      '연간 라이선스 + 유지보수',
+      '기업 보안/조달 프로세스 대응',
     ],
     highlighted: false,
   },
 ];
 
 const comparisonFeatures = [
-  { name: '월간 토큰', free: '50K', pro: '1M', team: '10M', enterprise: '무제한' },
-  { name: '연동', free: '3개', pro: '무제한', team: '무제한', enterprise: '무제한 + 맞춤' },
-  { name: '시트', free: '1', pro: '1', team: '무제한', enterprise: '무제한' },
-  { name: '분석', free: '기본', pro: '고급', team: '팀 대시보드', enterprise: '맞춤' },
-  { name: 'API 접근', free: '—', pro: '✓', team: '✓', enterprise: '✓' },
-  { name: '커스텀 웹훅', free: '—', pro: '✓', team: '✓', enterprise: '✓' },
-  { name: '워크플로우 공유', free: '—', pro: '—', team: '✓', enterprise: '✓' },
-  { name: '팀 역할 관리', free: '—', pro: '—', team: '✓', enterprise: '고급' },
-  { name: 'SSO', free: '—', pro: '—', team: '—', enterprise: '✓' },
-  { name: 'RBAC', free: '—', pro: '—', team: '기본', enterprise: '고급' },
-  { name: '감사 로그', free: '—', pro: '—', team: '—', enterprise: '✓' },
-  { name: '사용 이력 보관', free: '7일', pro: '30일', team: '90일', enterprise: '맞춤' },
-  { name: '지원', free: '커뮤니티', pro: '이메일', team: '이메일/채팅', enterprise: '전담 매니저' },
-  { name: 'SLA', free: '—', pro: '99.5%', team: '99.9%', enterprise: '99.99%' },
+  { name: '타겟 고객', personal: '개인/학생', pro: 'IT 전문가/헤비 유저', enterprise: '기업/기관' },
+  { name: '가격 정책', personal: '무료', pro: '$20/월', enterprise: '연간 계약' },
+  { name: '네이티브 OS 제어', personal: '일일 제한', pro: '무제한', enterprise: '정책 기반 확장' },
+  { name: '워크플로우 제안', personal: '단순 제안', pro: '고급 제안 (n8n)', enterprise: '조직 맞춤형' },
+  { name: '텔레그램 리포트', personal: '—', pro: '✓', enterprise: '✓' },
+  { name: 'Zero-Trust 관리자 대시보드', personal: '—', pro: '—', enterprise: '✓' },
+  { name: 'On-premise LLM 연동', personal: '—', pro: '—', enterprise: '✓' },
+  { name: '통합 Audit 로그', personal: '—', pro: '기본', enterprise: '고급/중앙관리' },
+  { name: '킬 스위치 중앙 관리', personal: '—', pro: '—', enterprise: '✓' },
+  { name: '계약/지원', personal: '커뮤니티', pro: '우선 지원', enterprise: '연간 유지보수 계약' },
 ];
 ---
 
-<BaseLayout title="요금제 - AllvIa" description="Free, Pro, Team, Enterprise — 사용 규모에 맞는 플랜을 선택하세요." lang="ko">
+<BaseLayout title="요금제 - AllvIa" description="Personal, Pro, Enterprise — 사용 규모에 맞는 플랜을 선택하세요." lang="ko">
   <Header slot="header" lang="ko" />
 
   <Section padding="large">
@@ -156,7 +129,7 @@ const comparisonFeatures = [
 
   <Section padding="none" class="pb-24 md:pb-32">
     <Container>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-on-scroll">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll">
         {plans.map((plan) => (
           <div class:list={[
             'rounded-lg border p-8 flex flex-col',
@@ -209,9 +182,8 @@ const comparisonFeatures = [
             <thead>
               <tr>
                 <th>기능</th>
-                <th>Free</th>
+                <th>Personal</th>
                 <th>Pro</th>
-                <th>Team</th>
                 <th>Enterprise</th>
               </tr>
             </thead>
@@ -219,9 +191,8 @@ const comparisonFeatures = [
               {comparisonFeatures.map((f) => (
                 <tr>
                   <td class="font-medium text-neutral-100">{f.name}</td>
-                  <td>{f.free}</td>
+                  <td>{f.personal}</td>
                   <td>{f.pro}</td>
-                  <td>{f.team}</td>
                   <td>{f.enterprise}</td>
                 </tr>
               ))}

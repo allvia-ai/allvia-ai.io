@@ -1,4 +1,4 @@
----
+﻿---
 import DocsLayout from '../../../layouts/DocsLayout.astro';
 const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? '';
 const isUserSiteRepo = repo.endsWith('.github.io');
@@ -84,20 +84,20 @@ const withBase = (url: string) => {
 
   <div data-os-only="macos">
     <pre><code>{`# Clone repository
-git clone https://github.com/NOVA-ALLRounder/main.git
-cd main/core
+git clone https://github.com/allvia-ai/ALLVIA.git
+cd ALLVIA
 
 # Create environment variable file
-cp .env.example .env`}</code></pre>
+cp core/.env.example core/.env`}</code></pre>
   </div>
 
   <div data-os-only="windows">
     <pre><code>{`# Clone repository
-git clone https://github.com/NOVA-ALLRounder/main.git
-cd main/core
+git clone https://github.com/allvia-ai/ALLVIA.git
+cd ALLVIA
 
 # Create environment variable file (PowerShell)
-Copy-Item .env.example .env`}</code></pre>
+Copy-Item core/.env.example core/.env`}</code></pre>
   </div>
 
   <p>Edit the <code>.env</code> file to set your <code>OPENAI_API_KEY</code>.</p>
@@ -110,14 +110,14 @@ Copy-Item .env.example .env`}</code></pre>
 
   <p>Build the Rust native binary. A release build takes about 2-3 minutes.</p>
 
-  <pre><code>{`cargo build --release`}</code></pre>
+  <pre><code>{`cargo build --manifest-path core/Cargo.toml --release`}</code></pre>
 
   <div data-os-only="macos">
-    <p>Binary location after build: <code>./target/release/local_os_agent</code></p>
+    <p>Binary location after build: <code>./core/target/release/local_os_agent</code></p>
   </div>
 
   <div data-os-only="windows">
-    <p>Binary location after build: <code>.\target\release\local_os_agent.exe</code></p>
+    <p>Binary location after build: <code>.\core\target\release\local_os_agent.exe</code></p>
   </div>
 
   <h2>Step 3 — Run the Agent</h2>
@@ -128,10 +128,10 @@ Copy-Item .env.example .env`}</code></pre>
     bash scripts/run_local.sh
     
     # Or run the release binary directly
-    ./target/release/local_os_agent
+    ./core/target/release/local_os_agent
     
     # Or use cargo run
-    cargo run --release --bin local_os_agent`}</code></pre>
+    cargo run --manifest-path core/Cargo.toml --bin core --release`}</code></pre>
   </div>
 
   <div data-os-only="windows">
@@ -141,12 +141,12 @@ Copy-Item .env.example .env`}</code></pre>
 .\scripts\run_core.ps1 -CollectorImpl rust
 
 # Or run directly
-.\target\release\local_os_agent.exe`}</code></pre>
+.\core\target\release\local_os_agent.exe`}</code></pre>
   </div>
 
   <p>When executed successfully, you'll see a prompt like this:</p>
 
-  <pre><code>{`AllvIa Agent v2.4.0 ready
+  <pre><code>{`AllvIa Agent ready
 Environment Scan: Found 349 apps
 Collector: running on port 8080
 Write Lock: enabled (use 'unlock' to disable)
@@ -217,9 +217,9 @@ docker compose up -d n8n
 # → http://localhost:5678
 
 # Change runtime mode (env variable)
-# STEER_N8N_RUNTIME=docker  (Default)
-# STEER_N8N_RUNTIME=npx
-# STEER_N8N_RUNTIME=manual`}</code></pre>
+# STEER_N8N_RUNTIME=manual  (Default)
+# STEER_N8N_RUNTIME=docker
+# STEER_N8N_RUNTIME=npx`}</code></pre>
 
   <h3>Data Collection & Batch Analysis</h3>
 
@@ -239,14 +239,14 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
 
   <p>Build desktop applications for team deployment.</p>
 
-  <pre><code>{`./scripts/build_release.sh`}</code></pre>
+  <pre><code>{`./scripts/rebuild_and_deploy.sh`}</code></pre>
 
   <div data-os-only="macos">
-    <p>After build, the <code>.app</code> file is created in <code>desktop/src-tauri/target/release/bundle/macos/</code>.</p>
+    <p>After build, the <code>.app</code> file is created in <code>web/src-tauri/target/release/bundle/macos/</code>.</p>
   </div>
 
   <div data-os-only="windows">
-    <p>After build, the <code>.exe</code> installer is created in <code>desktop/src-tauri/target/release/bundle/msi/</code> or <code>nsis/</code>.</p>
+    <p>After build, the <code>.exe</code> installer is created in <code>web/src-tauri/target/release/bundle/msi/</code> or <code>nsis/</code>.</p>
   </div>
 
   <h2>Next Steps</h2>
@@ -260,7 +260,7 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
   </ul>
 
   <hr />
-  <p>If you encounter issues, get help on <a href="https://github.com/NOVA-ALLRounder/main/issues">GitHub Issues</a> or <a href={withBase('/en/contact')}>contact our technical team directly</a>.</p>
+  <p>If you encounter issues, get help on <a href="https://github.com/allvia-ai/ALLVIA/issues">GitHub Issues</a> or <a href={withBase('/en/contact')}>contact our technical team directly</a>.</p>
 
   <style>
     .os-switcher-container {
@@ -353,3 +353,6 @@ bash scripts/run_pipeline_rs.sh configs/config.yaml`}</code></pre>
     });
   </script>
 </DocsLayout>
+
+
+

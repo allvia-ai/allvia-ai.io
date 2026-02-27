@@ -20,7 +20,7 @@ const withBase = (url: string) => {
 };
 ---
 
-<BaseLayout title="Product — AllvIa" description="자연어 OS 제어 에이전트. 73개+ Rust 모듈로 구성된 아키텍처, NL 자동화 파이프라인, 5계층 보안 모델을 확인하세요." lang="ko">
+<BaseLayout title="Product — AllvIa" description="자연어 OS 제어 에이전트. 99개+ Rust 코어 모듈로 구성된 아키텍처, NL 자동화 파이프라인, 5계층 보안 모델을 확인하세요." lang="ko">
   <Header slot="header" lang="ko" />
 
   <!-- Hero -->
@@ -32,7 +32,7 @@ const withBase = (url: string) => {
         <p class="text-body-lg text-neutral-400 max-w-2xl mx-auto mb-10">
           AllvIa는 의도 분석부터 실행, 검증, 승인까지 완전 자동화된 NL 파이프라인과 
           백그라운드에서 사용자 행동을 학습하는 Shadow Mode를 제공합니다.
-          73개+ Rust 모듈로 구성된 Single Source of Truth(SSOT) 코어와 Zero Trust 기반의 5계층 보안을 갖춘 프로덕션 레디 에이전트입니다.
+          99개+ Rust 코어 모듈(총 111개 Rust 소스 파일)로 구성된 Single Source of Truth(SSOT) 코어와 Zero Trust 기반의 5계층 보안을 갖춘 프로덕션 레디 에이전트입니다.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Button variant="primary" size="lg" href={withBase('/docs/getting-started?os=macos')}>macOS에서 시작하기</Button>
@@ -209,7 +209,7 @@ const withBase = (url: string) => {
             </tr>
           </thead>
           <tbody>
-            <tr><td>Core Engine</td><td>Rust (73+ 모듈)</td><td>main.rs, core::lib.rs (Single Source of Truth), api_server.rs (Axum)</td></tr>
+            <tr><td>Core Engine</td><td>Rust (99+ 코어 모듈 / 111 Rust 소스)</td><td>main.rs, core::lib.rs (Single Source of Truth), api_server.rs (Axum)</td></tr>
             <tr><td>NL Pipeline</td><td>6-stage Automation</td><td>intent_router → slot_filler → plan_builder → execution → verification → approval</td></tr>
             <tr><td>Shadow Mode</td><td>Batch Pipeline</td><td>collector_rs → build_sessions → build_routines → build_handoff (Rust native)</td></tr>
             <tr><td>OS Control</td><td>AppleScript + Visual Driver</td><td>visual_driver.rs, browser_automation.rs, screen_recorder.rs</td></tr>

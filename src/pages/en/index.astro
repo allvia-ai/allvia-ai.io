@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -16,7 +16,7 @@ const faqItems = [
   {
     question: 'Which operating systems are supported?',
     answer:
-      'macOS 12+ (Monterey) is natively supported. Windows 10+ is supported via PowerShell-based services (run_core.ps1). Since it is a Rust-native build, it can also be compiled on Linux.',
+      'Based on the current main repository, macOS 12+ (Monterey) is the required/recommended environment. Windows execution is available through scripts/run_core.ps1, and Linux can be compiled via the Rust-native codebase.',
   },
   {
     question: 'Can I control my computer using natural language?',
@@ -41,12 +41,12 @@ const faqItems = [
   {
     question: 'Can teams use it together?',
     answer:
-      'One-click deployment to team members is possible with Tauri-based desktop apps (.app/.exe). It supports n8n workflow sharing, RBAC-based role management, and Self-Healing Guardian (automatic process restart).',
+      'Team deployment is available through Tauri desktop bundles (.app/.exe). It provides n8n workflow sharing and the Self-Healing Guardian path for automatic process restart.',
   },
 ];
 ---
 
-<BaseLayout title="AllvIa — All works via AI" description="An AI agent that controls your computer using natural language. 73+ Rust modules, 5-layer security, automatic pattern analysis, and workflow generation." lang="en">
+<BaseLayout title="AllvIa — All works via AI" description="An AI agent that controls your computer using natural language. 99+ Rust core modules, 5-layer security, automatic pattern analysis, and workflow generation." lang="en">
   <Header slot="header" lang="en" />
 
   <!-- Hero -->
@@ -98,17 +98,17 @@ const faqItems = [
         <p class="text-center text-caption text-neutral-500 font-medium tracking-wide uppercase mb-10">Core Capabilities</p>
 
         <div class="flex flex-wrap items-center justify-center gap-8 md:gap-14 mb-16">
-          {['surf', 'routine', 'recommend', 'control', 'build_workflow', 'exec', 'status'].map((name) => (
+          {['surf', 'routine', 'recommend', 'control', 'build_workflow', 'ai_digest', 'exec', 'status'].map((name) => (
             <div class="flex items-center justify-center h-8 px-4 text-neutral-400 text-sm font-mono font-semibold tracking-wider">{name}</div>
           ))}
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
           {[
-            { value: '73+', label: 'Rust Modules' },
+            { value: '99+', label: 'Rust Core Modules' },
             { value: '5', label: 'Security Layers' },
             { value: '4', label: 'External Integrations' },
-            { value: '7', label: 'CLI Commands' },
+            { value: '8', label: 'CLI Commands' },
           ].map((stat) => (
             <div class="text-center rounded-lg border border-white/10 bg-[#14161b] py-8">
               <p class="text-h2 text-white font-bold">{stat.value}</p>
@@ -350,11 +350,11 @@ const faqItems = [
       <div class="text-center animate-on-scroll">
         <h2 class="text-h2 text-white mb-4">Get Started Today</h2>
         <p class="text-body-lg text-neutral-400 max-w-xl mx-auto mb-10">
-          Cloning, building, and running takes only 5 minutes. Experience the performance of 73+ Rust modules for yourself.
+          Cloning, building, and running takes only 5 minutes. Experience the performance of 99+ Rust core modules for yourself.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button variant="primary" size="lg" href={lang === 'en' ? "/en/docs/getting-started" : "/docs/getting-started"}>Get Started</Button>
-          <Button variant="ghost" size="lg" href="https://github.com/NOVA-ALLRounder/main" external>GitHub</Button>
+          <Button variant="ghost" size="lg" href="https://github.com/allvia-ai/ALLVIA.git" external>GitHub</Button>
         </div>
       </div>
     </Container>
@@ -362,3 +362,4 @@ const faqItems = [
 
   <Footer slot="footer" lang="en" />
 </BaseLayout>
+

@@ -1,4 +1,4 @@
----
+﻿---
 import DocsLayout from '../../../layouts/DocsLayout.astro';
 const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? '';
 const isUserSiteRepo = repo.endsWith('.github.io');
@@ -22,7 +22,7 @@ const withBase = (url: string) => {
   <p>AllvIa is a <strong>user-behavior-based automation agent</strong>. It analyzes computer usage patterns at the OS level to automatically detect repetitive tasks, and the AI recommends and executes optimal automations. It's implemented as a Rust native binary, providing high stability and processing performance.</p>
 
   <h3>Which operating systems are supported?</h3>
-  <p>We officially support <strong>macOS 12+</strong> (Monterey or later) and <strong>Windows 10+</strong>. Since it is a Rust native build, it can be compiled on Linux as well, but the official support scope is macOS and Windows.</p>
+  <p><strong>macOS 12+</strong> (Monterey or later) is the required/recommended environment. Windows execution is available through <code>scripts/run_core.ps1</code>, and Linux can be compiled through the Rust-native codebase.</p>
 
   <h3>Can I control my computer using natural language?</h3>
   <p>Yes. By entering natural language instructions like "Search for weather" or "Create a note in Notes" with the <code>surf</code> command, <code>intent_router</code> analyzes intent, <code>plan_builder</code> generates an execution plan, and <code>visual_driver</code> and <code>browser_automation</code> control the OS directly. We also support complex multi-app scenarios that connect multiple apps.</p>
@@ -144,5 +144,6 @@ const withBase = (url: string) => {
 
   <hr />
 
-  <p>If you have unresolved issues, please open an issue on <a href="https://github.com/NOVA-ALLRounder/main/issues">GitHub Issues</a> or <a href={withBase('/en/contact')}>contact our technical team directly</a>.</p>
+  <p>If you have unresolved issues, please open an issue on <a href="https://github.com/allvia-ai/ALLVIA/issues">GitHub Issues</a> or <a href={withBase('/en/contact')}>contact our technical team directly</a>.</p>
 </DocsLayout>
+
