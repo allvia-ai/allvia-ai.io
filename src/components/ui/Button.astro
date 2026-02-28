@@ -25,8 +25,26 @@ const sizeClasses = {
 
 const classes = [baseClasses, variantClasses[variant], sizeClasses[size], className].filter(Boolean).join(' ');
 
-const Tag = href ? 'a' : 'button';
-const resolvedHref = href;
+const basePathRaw = import.meta.env.BASE_URL ?? '/';
+const normalizedBasePath = basePathRaw.endsWith('/') ? basePathRaw : `${basePathRaw}/`;
+const basePrefix = normalizedBasePath === '/' ? '' : normalizedBasePath.slice(0, -1);
+
+const isExternalHref = (url: string) =>
+  url.startsWith('http://') ||
+  url.startsWith('https://') ||
+  url.startsWith('mailto:') ||
+  url.startsWith('tel:') ||
+  url.startsWith('#') ||
+  url.startsWith('//');
+
+const withBase = (url: string) => {
+  if (!url || isExternalHref(url) || !url.startsWith('/')) return url;
+  if (!basePrefix) return url;
+  if (url === basePrefix || url.startsWith(`${basePrefix}/`)) return url;
+  return `${basePrefix}${url}`;
+};
+
+const resolvedHref = href ? withBase(href) : undefined;
 ---
 
 {href ? (
